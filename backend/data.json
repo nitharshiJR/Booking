@@ -1,0 +1,83 @@
+[
+    {
+      "title": "Room A",
+      "price": 5000,
+      "address": "Street ABC, City XYZ",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "image": "https://example.com/room-a.jpg"
+    },
+    {
+      "title": "Room B",
+      "price": 6500,
+      "address": "Sector 45, Metro City",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "image": "https://example.com/room-b.jpg"
+    },
+    {
+      "title": "Room C",
+      "price": 7500,
+      "address": "Main Road, Urban Town",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "image": "https://example.com/room-c.jpg"
+    },
+    {
+      "title": "Room D",
+      "price": 4800,
+      "address": "Lake View Apartments, Green City",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "image": "https://example.com/room-d.jpg"
+    },
+    {
+      "title": "Room E",
+      "price": 5500,
+      "address": "Near University, College Town",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "image": "https://example.com/room-e.jpg"
+    },
+    {
+      "title": "Room F",
+      "price": 9000,
+      "address": "Penthouse, Luxury Towers",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "image": "https://example.com/room-f.jpg"
+    },
+    {
+      "title": "Room G",
+      "price": 4300,
+      "address": "Old Town, Heritage Colony",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "image": "https://example.com/room-g.jpg"
+    },
+    {
+      "title": "Room H",
+      "price": 7800,
+      "address": "Downtown, Business District",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "image": "https://example.com/room-h.jpg"
+    },
+    {
+      "title": "Room I",
+      "price": 6000,
+      "address": "Sunrise Avenue, Coastal Town",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "image": "https://www.google.com/imgres?q=room%20for%20rent%20in%20jaffna&imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F490971211.jpg%3Fk%3D6292cbc7d9688bf28cda8b05e2b4389fbc6e3110c14ddeb9909e1e61eff20870%26o%3D%26hp%3D1&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Flk%2Fspacious-full-house-rental.html&docid=5pCjB69qkxZ46M&tbnid=aUsihuO8Sozj_M&vet=12ahUKEwiryZLY75CMAxUnUGwGHYoNB4IQM3oECBcQAA..i&w=911&h=683&hcb=2&ved=2ahUKEwiryZLY75CMAxUnUGwGHYoNB4IQM3oECBcQAA"
+    },
+    {
+      "title": "Room J",
+      "price": 5100,
+      "address": "Hilltop Residency, Mountain City",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "image": "https://example.com/room-j.jpg"
+    }
+  ]
+  
