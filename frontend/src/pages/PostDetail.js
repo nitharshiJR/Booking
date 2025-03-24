@@ -12,7 +12,7 @@ export default function PostDetail() {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/posts/${id}`);
+                const response = await axios.get(`http://localhost:8000/api/rooms/${id}`);
                 setPost(response.data);
             } catch (error) {
                 console.error("Error fetching post:", error);

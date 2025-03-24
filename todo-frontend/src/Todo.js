@@ -11,15 +11,7 @@ export default function Todo() {
     const [todos, setTodos] = useState([]);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
-    const [editId, setEditId] = useState(-1);
 
-    // Edit states
-    const [editTitle, setEditTitle] = useState("");
-    const [editBedrooms, setEditBedrooms] = useState("");
-    const [editBathrooms, setEditBathrooms] = useState("");
-    const [editPrice, setEditPrice] = useState("");
-    const [editAddress, setEditAddress] = useState("");
-    const [editDescription, setEditDescription] = useState("");
 
     const apiUrl = "http://localhost:8000";
 
