@@ -22,58 +22,50 @@ export default function PostDetail() {
             }
         };
         fetchPost();
-       
     }, [id]);
 
     const handleConfirm = () => {
         navigate("/register");
     };
 
-    if (loading) return <h1 style={{ textAlign: "center", color: "#007bff" }}>Loading post details...</h1>;
-    if (error) return <h1 style={{ textAlign: "center", color: "#dc3545" }}>{error}</h1>;
-    if (!post) return <h1 style={{ textAlign: "center", color: "#ffc107" }}>Post not found.</h1>;
+    if (loading) return <h1 className="text-center text-primary">Loading post details...</h1>;
+    if (error) return <h1 className="text-center text-danger">{error}</h1>;
+    if (!post) return <h1 className="text-center text-warning">Post not found.</h1>;
 
     return (
-        <div style={{
-            maxWidth: "800px",
-            margin: "40px auto",
-            padding: "20px",
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#fff"
-        }}>
-            <h2 style={{ textAlign: "center", color: "#333" }}>{post.title}</h2>
+        <div className="container mt-4 p-4 border rounded shadow bg-light" style={{ maxWidth: "800px" }}>
+            <h2 className="text-center text-dark">{post.title}</h2>
+            
+            {/* Main post image */}
             <img 
-                src={post.image} 
+                src={post.image || "https://via.placeholder.com/600"} 
                 alt={post.title} 
-                style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: "10px",
-                    marginBottom: "15px"
-                }}
+                className="img-fluid rounded mb-3"
             />
-            <p style={{ color: "#555", fontSize: "16px", lineHeight: "1.6" }}>{post.description}</p>
-            <p style={{ fontSize: "18px", fontWeight: "bold", color: "#28a745" }}>Price: Rs.{post.price}</p>
+            
+            <p className="text-secondary">{post.description}</p>
+            <p className="fw-bold text-success">Price: Rs.{post.price}</p>
             <p><strong>Bedrooms:</strong> {post.bedrooms}</p>
             <p><strong>Bathrooms:</strong> {post.bathrooms}</p>
             <p><strong>Address:</strong> {post.address}</p>
+            
+            {/* Map Image with link */}
+            {post.mapImage && post.mapLink ? (
+                <a href={post.mapLink} target="_blank" rel="noopener noreferrer">
+                    <img 
+                        src="https://i.pinimg.com/736x/18/4b/32/184b32063745dc834166aaafb1f765ec.jpg"
+                        alt="Map Location" 
+                        className="img-fluid rounded mt-3"
+                        style={{ cursor: "pointer",width: "100px", height: "100px" }}	
+
+                    />
+                </a>
+            ) : (
+                <p className="text-center text-muted">Map location not available</p>
+            )}
 
             <button 
-                style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "12px",
-                    marginTop: "20px",
-                    backgroundColor: "#28a745",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    fontSize: "18px",
-                    cursor: "pointer",
-                    transition: "0.3s"
-                }}
+                className="btn btn-success w-100 mt-3" 
                 onClick={handleConfirm}
                 onMouseOver={(e) => e.target.style.backgroundColor = "#218838"}
                 onMouseOut={(e) => e.target.style.backgroundColor = "#28a745"}

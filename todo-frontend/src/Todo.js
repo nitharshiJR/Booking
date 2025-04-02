@@ -8,45 +8,82 @@ export default function Todo() {
     const [price, setPrice] = useState("");
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
+    const [mapImage, setMapImage] = useState("");
+    const [mapLink, setMapLink] = useState("");
     const [todos, setTodos] = useState([]);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+    const [editId, setEditId] = useState(null);
 
-
-    const apiUrl = "http://localhost:8000";
-
-    const handleSubmit = () => {
-        setError("");
-        if (title && bedrooms && bathrooms && price && address && description) {
-            fetch(apiUrl + "/details", {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, bedrooms, bathrooms, price, address, description })
-            }).then((res) => {
-                if (res.ok) {
-                    getItems();
-                    setTitle(""); setBedrooms(""); setBathrooms(""); setPrice(""); setAddress(""); setDescription("");
-                    setMessage("Item added successfully");
-                    setTimeout(() => setMessage(""), 3000);
-                } else {
-                    setError("Unable to create Todo item");
-                }
-            }).catch(() => setError("Unable to create Todo item"));
-        }
-    };
+    const apiUrl = "http://localhost:8000/api/rooms";
 
     useEffect(() => { getItems(); }, []);
 
-    const getItems = () => {
-        fetch(apiUrl + "/details")
-            .then(res => res.json())
-            .then(res => setTodos(res));
+    const getItems = async () => {
+        try {
+            const res = await fetch(apiUrl);
+            if (res.ok) {
+                const data = await res.json();
+                setTodos(data);
+            } else {
+                setError("Failed to load properties");
+            }
+        } catch (error) {
+            console.error("Error fetching properties:", error);
+            setError("Error fetching properties.");
+        }
     };
 
-    const handleDelete = (id) => {
+    const handleSubmit = async () => {
+        setError("");
+        if (title && bedrooms && bathrooms && price && address && description && mapImage && mapLink) {
+            try {
+                const method = editId ? "PUT" : "POST";
+                const url = editId ? `${apiUrl}/${editId}` : apiUrl;
+
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, bedrooms, bathrooms, price, address, description, mapImage, mapLink })
+                });
+
+                if (response.ok) {
+                    getItems();
+                    setTitle(""); setBedrooms(""); setBathrooms(""); setPrice(""); setAddress(""); setDescription(""); setMapImage(""); setMapLink("");
+                    setEditId(null);
+                    setMessage(editId ? "Property updated successfully" : "Property added successfully");
+                    setTimeout(() => setMessage(""), 3000);
+                } else {
+                    setError("Unable to save property");
+                }
+            } catch (error) {
+                setError("Error: " + error.message);
+            }
+        } else {
+            setError("All fields are required");
+        }
+    };
+
+    const handleEdit = (item) => {
+        setTitle(item.title);
+        setBedrooms(item.bedrooms);
+        setBathrooms(item.bathrooms);
+        setPrice(item.price);
+        setAddress(item.address);
+        setDescription(item.description);
+        setMapImage(item.mapImage);
+        setMapLink(item.mapLink);
+        setEditId(item._id);
+    };
+
+    const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete?')) {
-            fetch(apiUrl + '/details/' + id, { method: "DELETE" })
-                .then(() => getItems());
+            try {
+                await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+                getItems();
+            } catch (error) {
+                console.error("Error deleting property:", error);
+            }
         }
     };
 
@@ -56,7 +93,7 @@ export default function Todo() {
                 <h1>🏡 Property Listings</h1>
             </div>
             <div className="card p-4 mt-3">
-                <h3 className="mb-3">Add New Property</h3>
+                <h3 className="mb-3">{editId ? "Edit Property" : "Add New Property"}</h3>
                 {message && <p className="alert alert-success">{message}</p>}
                 <div className="row g-2">
                     <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="form-control" type="text" />
@@ -65,29 +102,39 @@ export default function Todo() {
                     <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="form-control" type="number" />
                     <input placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" type="text" />
                     <input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="form-control" type="text" />
-                    <button className="btn btn-primary mt-2" onClick={handleSubmit}>Add Property</button>
+                    <input placeholder="Map Image URL" value={mapImage} onChange={(e) => setMapImage(e.target.value)} className="form-control" type="text" />
+                    <input placeholder="Google Map Link" value={mapLink} onChange={(e) => setMapLink(e.target.value)} className="form-control" type="text" />
+                    <button className="btn btn-primary mt-2" onClick={handleSubmit}>{editId ? "Update Property" : "Add Property"}</button>
                 </div>
                 {error && <p className="alert alert-danger mt-2">{error}</p>}
             </div>
             <div className="mt-4">
                 <h3>Available Properties</h3>
                 <div className="row">
-                    {todos.map((item) => (
-                        <div key={item._id} className="col-md-4">
-                            <div className="card shadow-sm p-3 mb-3">
-                                <h5>{item.title}</h5>
-                                <p><strong>Bedrooms:</strong> {item.bedrooms}</p>
-                                <p><strong>Bathrooms:</strong> {item.bathrooms}</p>
-                                <p><strong>Price:</strong> ${item.price}</p>
-                                <p><strong>Address:</strong> {item.address}</p>
-                                <p><strong>Description:</strong> {item.description}</p>
-                                <div className="d-flex justify-content-between">
-                                    <button className="btn btn-warning">Edit</button>
-                                    <button className="btn btn-danger" onClick={() => handleDelete(item._id)}>Delete</button>
+                    {todos.length > 0 ? (
+                        todos.map((item) => (
+                            <div key={item._id} className="col-md-4">
+                                <div className="card shadow-sm p-3 mb-3">
+                                    <h5>{item.title}</h5>
+                                    <p><strong>Bedrooms:</strong> {item.bedrooms}</p>
+                                    <p><strong>Bathrooms:</strong> {item.bathrooms}</p>
+                                    <p><strong>Price:</strong> Rs.{item.price}</p>
+                                    <p><strong>Address:</strong> {item.address}</p>
+                                    <p><strong>Description:</strong> {item.description}</p>
+                                    <img src={item.mapImage} alt="Map" className="img-fluid" />
+                                    <p>
+                                        <a href={item.mapLink} target="_blank" rel="noopener noreferrer" className="btn btn-info mt-2">View on Map</a>
+                                    </p>
+                                    <div className="d-flex justify-content-between">
+                                        <button className="btn btn-warning" onClick={() => handleEdit(item)}>Edit</button>
+                                        <button className="btn btn-danger" onClick={() => handleDelete(item._id)}>Delete</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p>Loading properties...</p>
+                    )}
                 </div>
             </div>
         </div>

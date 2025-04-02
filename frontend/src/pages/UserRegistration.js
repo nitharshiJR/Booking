@@ -43,22 +43,17 @@ export default function UserRegistrationForm() {
             const response = await axios.post("http://localhost:8000/api/register", formData);
             if (response.status === 201) {
                 setSubmitted(true);
+                // Navigate to the /pay page after successful form submission
+                navigate("/pay");
             }
         } catch (error) {
             console.error("Error submitting form:", error);
         }
     };
-    
-    const handleConfirm= () => {
-        navigate("/pay");
-    };
-
-    
-    
 
     return (
         <div style={{ maxWidth: "500px", margin: "30px auto", padding: "20px", border: "1px solid #ccc", borderRadius: "10px", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}>
-            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>User Registration</h2>
+            <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Tenant Details</h2>
             <form onSubmit={handleSubmit}>
                 {[  
                     { label: "Full Name", name: "name" },
@@ -90,8 +85,10 @@ export default function UserRegistrationForm() {
                     </div>
                 ))}
 
-                <button type="submit" style={{ width: "100%", padding: "10px", background: "#007bff", color: "#fff", border: "none", borderRadius: "5px", fontSize: "18px", cursor: "pointer" }}
-                 onClick={handleConfirm}>
+                <button 
+                    type="submit" 
+                    style={{ width: "100%", padding: "10px", background: "#007bff", color: "#fff", border: "none", borderRadius: "5px", fontSize: "18px", cursor: "pointer" }}
+                >
                     Confirm
                 </button>
             </form>
